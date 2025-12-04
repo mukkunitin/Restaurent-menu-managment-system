@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Restaurant Menu</title>
+  <style>
+    /* Reset-ish */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height: 100%; font-family: Arial, Helvetica, sans-serif; color: #222; }
+    .container { width: min(1100px, 94%); margin: 0 auto; }
+
+    /* Header */
+    .site-header { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 50; }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; padding: 12px 0; }
+    .logo { font-weight:700; font-size:1.2rem; }
+    .logo .accent { color:#e8594c; }
+    .main-nav a { margin-left:18px; text-decoration:none; color:#333; font-weight:500; }
+    .cart { cursor:pointer; font-size:1rem; }
+
+    /* Hero */
+    .hero { background: linear-gradient(90deg, #fff6f4, #fff); padding: 36px 0; text-align:center; margin-bottom:18px; }
+    .hero h1 { margin-bottom:6px; font-size:2rem; }
+    .hero p { color:#666; }
+
+    /* Filters */
+    .filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; margin-top:6px; }
+    .filter-btn { background:#f5f5f5; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
+    .filter-btn:hover { transform:translateY(-2px); }
+    .filter-btn.active { background: #e8594c; color: #fff; }
+
+    /* Menu Grid */
+    .menu-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:18px; }
+    .menu-item { background:#fff; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.06); overflow:hidden; display:flex; flex-direction:column; }
+    .menu-item img { width:100%; height:160px; object-fit:cover; display:block; }
+    .item-details { padding:12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .item-details h3 { font-size:1.05rem; }
+    .item-details .desc { color:#666; font-size:0.95rem; }
+    .meta { margin-top:auto; display:flex; align-items:center; justify-content:space-between; }
+    .price { font-weight:700; }
+    .add-btn { background:#e8594c; color:#fff; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600; }
+    .add-btn:hover { opacity:0.95; }
+
+    /* About/Contact sections */
+    .about, .contact { padding:18px 0; }
+    .about h2, .contact h2 { margin-bottom:8px; }
+
+    /* Footer */
+    .site-footer { background:#fafafa; padding:16px 0; margin-top:18px; border-top:1px solid #eee; text-align:center; }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .hero h1 { font-size:1.6rem; }
+      .menu-item img { height:140px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">Delicious<span class="accent">Bites</span></div>
+      <nav class="main-nav">
+        <a href="#">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="cart" id="cartBtn" title="View cart">
+        🛒 <span id="cartCount">0</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Explore Our Tasty Menu</h1>
+        <p>Fresh. Delicious. Made with love.</p>
+      </div>
+    </section>
+
+    <section id="menu" class="container menu-section">
+      <div class="filter-bar">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="starters">Starters</button>
+        <button class="filter-btn" data-cat="main-course">Main Course</button>
+        <button class="filter-btn" data-cat="desserts">Desserts</button>
+        <button class="filter-btn" data-cat="beverages">Beverages</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <!-- Menu items go here (same as your HTML) -->
+        <!-- Starters -->
+        <article class="menu-item starters">
+          <img src="images/garlic-bread.jpg" alt="Garlic Bread">
+          <div class="item-details">
+            <h3>Garlic Bread</h3>
+            <p class="desc">Toasted baguette with garlic butter and herbs.</p>
+            <div class="meta">
+              <span class="price">$3.99</span>
+              <button class="add-btn" onclick="addToCart('Garlic Bread', 3.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-item starters">
+          <img src="images/chicken-wings.jpg" alt="Chicken Wings">
+          <div class="item-details">
+            <h3>Chicken Wings</h3>
+            <p class="desc">Spicy fried wings with a tangy dip.</p>
+            <div class="meta">
+              <span class="price">$5.99</span>
+              <button class="add-btn" onclick="addToCart('Chicken Wings', 5.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Main Course -->
+        <article class="menu-item main-course">
+          <img src="images/margherita-pizza.jpg" alt="Margherita Pizza">
+          <div class="item-details">
+            <h3>Margherita Pizza</h3>
+            <p class="desc">Classic pizza with fresh tomato and basil.</p>
+            <div class="meta">
+              <span class="price">$9.99</span>
+              <button class="add-btn" onclick="addToCart('Margherita Pizza', 9.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-item main-course">
+          <img src="images/butter-chicken.jpg" alt="Butter Chicken with Rice">
+          <div class="item-details">
+            <h3>Butter Chicken with Rice</h3>
+            <p class="desc">Creamy butter chicken served with steamed rice.</p>
+            <div class="meta">
+              <span class="price">$11.99</span>
+              <button class="add-btn" onclick="addToCart('Butter Chicken with Rice', 11.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Desserts -->
+        <article class="menu-item desserts">
+          <img src="images/chocolate-lava.jpg" alt="Chocolate Lava Cake">
+          <div class="item-details">
+            <h3>Chocolate Lava Cake</h3>
+            <p class="desc">Warm cake with molten chocolate center.</p>
+            <div class="meta">
+              <span class="price">$4.99</span>
+              <button class="add-btn" onclick="addToCart('Chocolate Lava Cake', 4.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-item desserts">
+          <img src="images/ice-cream.jpg" alt="Ice Cream Sundae">
+          <div class="item-details">
+            <h3>Ice Cream Sundae</h3>
+            <p class="desc">Vanilla ice cream topped with chocolate syrup.</p>
+            <div class="meta">
+              <span class="price">$3.99</span>
+              <button class="add-btn" onclick="addToCart('Ice Cream Sundae', 3.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Beverages -->
+        <article class="menu-item beverages">
+          <img src="images/lime-soda.jpg" alt="Fresh Lime Soda">
+          <div class="item-details">
+            <h3>Fresh Lime Soda</h3>
+            <p class="desc">Refreshing lime soda with a hint of salt.</p>
+            <div class="meta">
+              <span class="price">$2.99</span>
+              <button class="add-btn" onclick="addToCart('Fresh Lime Soda', 2.99)">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="menu-item beverages">
+          <img src="images/iced-coffee.jpg" alt="Iced Coffee">
+          <div class="item-details">
+            <h3>Iced Coffee</h3>
+            <p class="desc">Cold brewed coffee with milk and ice.</p>
+            <div class="meta">
+              <span class="price">$3.50</span>
+              <button class="add-btn" onclick="addToCart('Iced Coffee', 3.50)">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="about" class="container about">
+      <h2>About Us</h2>
+      <p>DeliciousBites is a small family-run kitchen dedicated to serving fresh and tasty food made from quality ingredients.</p>
+    </section>
+
+    <section id="contact" class="container contact">
+      <h2>Contact</h2>
+      <p>Email: hello@deliciousbites.example | Phone: +91 8796543794</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 DeliciousBites — All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple filter + cart simulation (no backend)
+    let cart = [];
+
+    function filterMenu(category) {
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Add active class to filter buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.getAttribute('data-cat');
+          filterMenu(cat);
+        });
+      });
+
+      // Wire cart button
+      const cartBtn = document.getElementById('cartBtn');
+      cartBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+          alert('Your cart is empty.');
+          return;
+        }
+        let total = 0;
+        let list = 'Items in cart:\\n';
+        cart.forEach((it, i) => { total += it.price; list += `${i+1}. ${it.name} - $${it.price.toFixed(2)}\\n`; });
+        list += `\\nTotal: $${total.toFixed(2)}`;
+        alert(list);
+      });
+    });
+
+    function addToCart(itemName, price) {
+      cart.push({ name: itemName, price: +price });
+      updateCartCount();
+      const shortMsg = `${itemName} added to cart.`;
+      const prev = document.getElementById('cartToast');
+      if (prev) prev.remove();
+      const toast = document.createElement('div');
+      toast.id = 'cartToast';
+      toast.textContent = shortMsg;
+      toast.style.position = 'fixed';
+      toast.style.right = '18px';
+      toast.style.bottom = '18px';
+      toast.style.background = '#222';
+      toast.style.color = '#fff';
+      toast.style.padding = '10px 14px';
+      toast.style.borderRadius = '8px';
+      toast.style.boxShadow = '0 6px 18px rgba(0,0,0,0.15)';
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 1400);
+    }
+
+    function updateCartCount(){
+      const c = document.getElementById('cartCount');
+      c.textContent = cart.length;
+    }
+  </script>
+</body>
+</html>
